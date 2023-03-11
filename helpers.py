@@ -5,8 +5,6 @@ class Dataset:
     def __init__(self, json_file) -> None:
         pass
 
-
-
 def is_float_or_int(value):
     return str(value).isnumeric() or is_float(value)
 

@@ -1,8 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 from pathlib import Path
 from .helpers import is_float_or_int
+from geopy.distance import geodesic
 import json, os
 from dotenv import load_dotenv
+import secrets
+import random
 
 """
 FLASK INITIIALIZATION
@@ -12,32 +15,67 @@ app = Flask(__name__)
 BASE = Path(__file__).parent.resolve()
 FRONT_END = BASE / 'front-end'
 
-load_dotenv()
+load_dotenv(BASE / '.env')
+secret = os.getenv('secret_key')
+app.secret_key = secret
 
-app.secret_key = os.getenv('secret_key')
+
+# turn json file into python dict
+with open('locations.json') as json_file:
+    imgdict = json.load(json_file)
+
+padding = 30
+scoring = 100
 
 """
-ROUTES AND LOGIC
+HTML ROUTES
 """
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/game')
+@app.route('/game/')
 def game():
     return render_template('game.html')
 
+
+'''
+API ROUTES
+'''
+
+# get 5 unique random locations
 @app.get('/api/game_sequence')
 def game_sequence():
-    return {'lat_ids': [1, 2, 3, 4, 5]}, 200
+    loc_id_list = [key for key in imgdict]
+    random_loc_ids = random.choices(loc_id_list, k=5)
+    return {'loc_ids': random_loc_ids}, 200
 
-@app.post('/api/answer/<lat>/<lgt>')
-def game_answer(lat, lgt):
+# return static file based off loc id
+@app.get('/api/image_loc/<loc_id>')
+def get_image_for_loc(loc_id):
+    return {'url':url_for('static', filename= 'images/' + imgdict[loc_id]['image_name'])}, 200
+
+# compare user guess to right answer, compute score based on user guess
+@app.post('/api/answer/<loc_id>/<lat>/<lgt>')
+def game_answer(loc_id, lat, lgt):
     if not is_float_or_int(lat) or not is_float_or_int(lgt):
         return {'messasge': 'Incorrect values for latitude or longitude'}, 400
 
-    lat, lgt = float(lat), float(lgt)
+    guess_coords = (float(lat), float(lgt))
+    actual_coords = ((imgdict[loc_id]['lat']), (imgdict[loc_id]['lng']))
 
-    record = {'guess': {'lat':lat, 'lgt':lgt}, 'actual': {'lat':lat, 'lgt':lgt}, 'score': 100}
-    print(record)
-    return record, 201
+    distance = geodesic(guess_coords, actual_coords).feet
+
+    maxdist = 6388
+    score = ((maxdist - distance) + padding) / maxdist
+    if score < 0:
+        score = 0
+    if score > 1:
+        score = 1
+
+    record = {
+        'guess':{'lat':float(lat),'lgt':float(lgt)},
+        'actual':{'lat':imgdict[loc_id]['lat'],'lgt':imgdict[loc_id]['lng']},
+        'score': score * scoring
+    }
+    return record, 200

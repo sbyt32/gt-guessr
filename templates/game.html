@@ -1,84 +1,36 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>GTGuessr</title>
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: sans-serif;
-      }
-      .container {
-        margin: 0 auto;
-        height: 100vh;
-        display: flex;
-      }
-      .left-panel {
-        flex-basis: 100px;
-        background-color: #f2f2f2;
-        padding: 20px;
-        box-sizing: border-box;
-      }
-      .timer-label,
-      .score-label {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: #333333;
-      }
-      .timer,
-      .score {
-        font-size: 24px;
-        margin-bottom: 20px;
-        color: #666666;
-      }
-      .skip-button {
-        margin-top: auto;
-        display: block;
-        width: 100px;
-        height: 40px;
-        background-color: rgb(66, 66, 200);
-        color: #ffffff;
-        font-size: 18px;
-        text-align: center;
-        line-height: 40px;
-        text-decoration: none;
-        border-radius: 5px;
-        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-      }
-      .right-panel {
-        flex-grow: 1;
-        background-color: #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .image {
-        max-width: 100%;
-        max-height: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="left-panel">
-        <h1>GTGuessr</h1>
-        <div class="timer-label">Timer</div>
-        <div class="timer">00:00</div>
-        <div class="score-label">Score</div>
-        <div class="score">0</div>
-        <a href="#" class="skip-button">Skip</a>
-      </div>
+{% extends 'base.html' %}
 
-      <div class="right-panel">
-        <img
-          src="https://via.placeholder.com/500x500"
-          alt="Game Image"
-          class="image"
-        />
-        <div id="map-popup"></div>
-      </div>
+{% block title %}Game{% endblock %}
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='game.js') }}"></script>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+  crossorigin=""></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="left-panel">
+      <h1>GTGuessr</h1>
+      <div class="timer-label">Timer</div>
+      <div class="timer">00:00</div>
+      <div class="score-label">Score</div>
+      <div class="score">0</div>
+      <a id="submit" href="#" class="submit-button">Submit</a>
     </div>
-  </body>
-</html>
+
+    <div class="right-panel">
+      <div id="panorama"></div>
+      <div id="map"></div>
+    </div>
+  </div>
+{% endblock %}
