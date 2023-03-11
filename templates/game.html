@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GTGuessr</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .container {
+        margin: 0 auto;
+        height: 100vh;
+        display: flex;
+      }
+      .left-panel {
+        flex-basis: 100px;
+        background-color: #f2f2f2;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      .timer-label,
+      .score-label {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333333;
+      }
+      .timer,
+      .score {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #666666;
+      }
+      .skip-button {
+        margin-top: auto;
+        display: block;
+        width: 100px;
+        height: 40px;
+        background-color: rgb(66, 66, 200);
+        color: #ffffff;
+        font-size: 18px;
+        text-align: center;
+        line-height: 40px;
+        text-decoration: none;
+        border-radius: 5px;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+      }
+      .right-panel {
+        flex-grow: 1;
+        background-color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .image {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left-panel">
+        <h1>GTGuessr</h1>
+        <div class="timer-label">Timer</div>
+        <div class="timer">00:00</div>
+        <div class="score-label">Score</div>
+        <div class="score">0</div>
+        <a href="#" class="skip-button">Skip</a>
+      </div>
+
+      <div class="right-panel">
+        <img
+          src="https://via.placeholder.com/500x500"
+          alt="Game Image"
+          class="image"
+        />
+        <div id="map-popup"></div>
+      </div>
+    </div>
+  </body>
+</html>
