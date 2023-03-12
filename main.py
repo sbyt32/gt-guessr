@@ -24,9 +24,9 @@ app.secret_key = secret
 with open(BASE / 'locations.json') as json_file:
     imgdict = json.load(json_file)
 
-padding = 40
-scoring = 1000
-factor = 2
+padding = 70
+scoring = 1500
+factor = 1.8
 
 """
 HTML ROUTES
