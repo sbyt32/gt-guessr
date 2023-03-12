@@ -60,7 +60,8 @@ function startRound()
 
     seconds = 0;
     timer = setInterval(updateTimer, 1000);
-    $( ".round" ).text((pos+1) + '/5')
+    $( ".round" ).text((pos+1) + '/5');
+    $( ".score" ).text(totalScore);
     $( "#submit" ).addClass('deactivated');
     $( "#next" ).addClass('deactivated');
 }
