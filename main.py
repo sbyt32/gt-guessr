@@ -21,7 +21,7 @@ app.secret_key = secret
 
 
 # turn json file into python dict
-with open('locations.json') as json_file:
+with open(BASE / 'locations.json') as json_file:
     imgdict = json.load(json_file)
 
 padding = 40
