@@ -43,3 +43,7 @@ p {
 .body {
   text-align: left;
 }
+
+.footer p {
+  font-size: 14px;
+}
