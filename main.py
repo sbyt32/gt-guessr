@@ -24,9 +24,12 @@ app.secret_key = secret
 with open(BASE / 'locations.json') as json_file:
     imgdict = json.load(json_file)
 
-padding = 70
-scoring = 1500
+padding = 80
+maxdist = 2500
 factor = 1.8
+
+scoring = 1000
+
 
 """
 HTML ROUTES
@@ -67,7 +70,7 @@ def game_answer(loc_id, lat, lgt):
 
     distance = geodesic(guess_coords, actual_coords).feet
 
-    maxdist = 2000
+
     score = (((maxdist - distance) + padding) / maxdist)
     if score < 0:
         score = 0
