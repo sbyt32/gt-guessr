@@ -1,6 +1,11 @@
 jQuery.ajaxSetup({async:false});
 $(document).ready(initialize);
 
+
+var res_map;
+var guess;
+var correct;
+
 var currentLoc;
 var map;
 var locations;
@@ -20,9 +25,10 @@ function initialize()
     );
 
     console.log(locations);
+    $( "#submit" ).click(onSubmitClick);
+    $( "#next" ).click(onNextClick);
 
-
-    startRound()
+    startRound();
 }
 
 function startRound()
@@ -35,24 +41,24 @@ function startRound()
         }
     );
 
-    console.log(image)
+    console.log(image);
+    console.log(pos);
 
-    var currentLoc = null;
+    currentLoc = null;
     if(map)
     {
         map.remove();
     }
-    $( "#map" ).empty();
     $( "#panorama" ).empty();
 
     createMap();
     createPano(image);
-    $( "#submit" ).click(onSubmitClick);
-    $( "#submit" ).addClass('deactivated');
 
-    $( "#next" ).click(onNextClick);
-    $( "#next" ).addClass('deactivated');
+    seconds = 0;
     timer = setInterval(updateTimer, 1000);
+    $( ".round" ).text((pos+1) + '/5')
+    $( "#submit" ).addClass('deactivated');
+    $( "#next" ).addClass('deactivated');
 }
 
 function showResults(data)
@@ -60,9 +66,17 @@ function showResults(data)
 
     const minutes = Math.floor(seconds / 60); // Calculate the number of minutes
     const remainingSeconds = seconds % 60; // Calculate the remaining seconds
+    clearInterval(timer);
+
     $('#round').text('Round '+(pos+1)+' out of 5');
     $('#distance').text('You guessed '+ Number((data.distance).toFixed(1)) +' feet away in ' + `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}` + '.');
     $('#score').text('Score: '+Number((data.score).toFixed(2))+'/1000');
+    $( "#next" ).removeClass('deactivated');
+
+    if (pos == 4)
+    {
+        $('#next').text('Finish');
+    }
 
     var zoom = 16;
     if (data.distance < 100)
@@ -78,19 +92,37 @@ function showResults(data)
         zoom = 17;
     }
 
-    var res_map = L.map('results').setView([data.actual.lat - 0.0001, data.actual.lng], zoom);
+    if (res_map)
+    {
+        res_map.remove()
+    }
 
-    correct = L.circleMarker([data.actual.lat, data.actual.lng], 10)
-    guess = L.marker([data.guess.lat, data.guess.lng])
+    createResMap([data.actual.lat - 0.0001, data.actual.lng], zoom)
 
-    correct.addTo(res_map)
-    guess.addTo(res_map)
+    correct = null;
+    guess = null;
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-        minZoom: 15,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(res_map);
+    if (!correct)
+    {
+        correct = L.circleMarker([data.actual.lat, data.actual.lng], 10);
+        correct.setStyle({color: 'red'});
+        correct.addTo(res_map);
+    }
+    else
+    {
+        correct.setLatLng([data.actual.lat, data.actual.lng]);
+    }
+
+    if (!guess)
+    {
+        guess = L.marker([data.guess.lat, data.guess.lng]);
+        guess.addTo(res_map);
+    }
+    else
+    {
+        guess.setLatLng([data.guess.lat, data.guess.lng]);
+    }
+
 
     enableUse($('#results'));
     enableUse($('#next'));
@@ -101,14 +133,29 @@ function onNextClick()
 {
     disableUse($('#results'));
     disableUse($('#next'));
-    $('#results').fadeTo(1, 0);
-    pos += 1;
-    startRound();
+
+    if (pos < 4)
+    {
+        pos += 1;
+        $('#results').fadeTo(1, 0);
+        startRound();
+    }
+    else
+    {
+        showFinish();
+    }
+
+}
+
+function showFinish()
+{
+    $('#outcome').fadeTo(750, 1);
 }
 
 function createMap()
 {
-    map = L.map('map').setView([33.77593881142522, -84.396317178747649], 15);
+    var latlng = [33.77581881142522, -84.3999417178747649];
+    map = L.map('map').setView(latlng, 15);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -116,7 +163,25 @@ function createMap()
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+    L.control.resetView({
+        position: "topleft",
+        title: "Reset view",
+        latlng: L.latLng(latlng),
+        zoom: 15,
+    }).addTo(map);
+
     map.on('click', onMapClick);
+}
+
+function createResMap(latlng, zoom)
+{
+    res_map = L.map('results').setView(latlng, zoom);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 20,
+        minZoom: 15,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(res_map);
 }
 
 function enableUse(obj)
@@ -147,12 +212,12 @@ function onMapClick(e) {
     {
         currentLoc = L.marker(e.latlng);
         currentLoc.addTo(map);
-        $( "#submit" ).removeClass('deactivated');
     }
     else
     {
         currentLoc.setLatLng(e.latlng);
     }
+    $( "#submit" ).removeClass('deactivated');
 }
 
 function onSubmitClick(e) {

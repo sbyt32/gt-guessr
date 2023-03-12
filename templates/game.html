@@ -7,6 +7,7 @@
      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
      crossorigin=""/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@drustack/leaflet.resetview/dist/L.Control.ResetView.min.css">
 {% endblock %}
 
 {% block scripts %}
@@ -15,12 +16,15 @@
   integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
   crossorigin=""></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@drustack/leaflet.resetview/dist/L.Control.ResetView.min.js"></script>
 {% endblock %}
 
 {% block body %}
   <div class="container">
     <div class="left-panel">
       <h1>GTGuessr</h1>
+      <div class="round-label">Round</div>
+      <div class="round">0</div>
       <div class="timer-label">Timer</div>
       <div class="timer" id="timer">00:00</div>
       <div class="score-label">Score</div>
@@ -40,6 +44,10 @@
         <p id="score"></p>
         <a id="next" href="#" class="button">Next Round</a>
       </div>
+    </div>
+
+    <div id="outcome">
+      You win :)
     </div>
   </div>
 {% endblock %}

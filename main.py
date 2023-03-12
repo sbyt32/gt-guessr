@@ -48,7 +48,7 @@ API ROUTES
 @app.get('/api/game_sequence')
 def game_sequence():
     loc_id_list = [key for key in imgdict]
-    random_loc_ids = random.choices(loc_id_list, k=5)
+    random_loc_ids = random.sample(loc_id_list, k=5)
     return {'loc_ids': random_loc_ids}, 200
 
 # return static file based off loc id
