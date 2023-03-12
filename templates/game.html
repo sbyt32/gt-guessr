@@ -37,8 +37,8 @@
       <div id="map"></div>
     </div>
 
-    <div id="results">
-      <div id="result-tab">
+    <div id="results" class="full-screen">
+      <div id="result-tab" class="full-screen-info">
         <p id="round"></p>
         <p id="distance"></p>
         <p id="score"></p>
@@ -46,8 +46,14 @@
       </div>
     </div>
 
-    <div id="outcome">
-      You win :)
+    <div id="outcome" class="full-screen">
+      <div id="outcome-tab" class="full-screen-info">
+        <h2>Final Results</h2>
+        <p id="outcome-score"></p>
+        <p id="outcome-time"></p>
+        <p id="outcome-flavor"></p>
+        <a id="again" href=""{{ url_for('home') }}"" class="button">Play Again</a>
+      </div>
     </div>
   </div>
 {% endblock %}

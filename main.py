@@ -34,8 +34,9 @@ scoring = 1000
 """
 HTML ROUTES
 """
+@app.route('/home/')
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
 
 @app.route('/game/')

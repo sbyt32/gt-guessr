@@ -14,6 +14,10 @@ const timerEl = document.getElementById('timer');
 var seconds = 0;
 var timer;
 
+var totalScore = 0;
+var totalTime = 0;
+var locationArr = [];
+
 function initialize()
 {
     console.log('hi :)')
@@ -123,10 +127,16 @@ function showResults(data)
         guess.setLatLng([data.guess.lat, data.guess.lng]);
     }
 
+    var lineCoord = [[data.guess.lat, data.guess.lng],[data.actual.lat, data.actual.lng]];
+    var polyline = L.polyline(lineCoord, {color:'red'}).addTo(res_map);
 
+    totalScore += data.score;
+    totalTime += seconds;
+    locationArr.push(lineCoord);
+
+    $('#results').fadeTo(500, 1);
     enableUse($('#results'));
     enableUse($('#next'));
-    $('#results').fadeTo(500, 1);
 }
 
 function onNextClick()
@@ -149,7 +159,44 @@ function onNextClick()
 
 function showFinish()
 {
+    const minutes = Math.floor(totalTime / 60); // Calculate the number of minutes
+    const remainingSeconds = totalTime % 60; // Calculate the remaining seconds
+
+    $('#outcome-score').text("Score: "+totalScore+"/5000");
+    $('#outcome-time').text("Time elapsed: "+`${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`);
+
+    var latlng = [33.77581881142522, -84.3999417178747649];
+    var finalMap = L.map('outcome').setView(latlng, 16);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        minZoom: 14,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(finalMap);
+
+    L.control.resetView({
+        position: "topleft",
+        title: "Reset view",
+        latlng: L.latLng(latlng),
+        zoom: 15,
+    }).addTo(finalMap);
+
+    locationArr.forEach(element => {
+        var g = element[0];
+        var a = element[1];
+
+        var g_m = L.marker(g);
+        g_m.addTo(finalMap);
+
+        var a_m = L.circleMarker(a, 10);
+        a_m.setStyle({color: 'red'});
+        a_m.addTo(finalMap);
+
+        var polyline = L.polyline(element, {color:'red'}).addTo(finalMap);
+    });
+
     $('#outcome').fadeTo(750, 1);
+    enableUse($('#outcome'));
 }
 
 function createMap()
