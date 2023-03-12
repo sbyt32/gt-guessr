@@ -2,7 +2,7 @@ import os
 
 def getimglist():
     # folder path
-    dir_path = r"C:\\Users\\Hanna\\Downloads\\gtguesserpics"
+    dir_path = os.listdir()
 
     # list to store files
     res = []

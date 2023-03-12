@@ -22,15 +22,24 @@
     <div class="left-panel">
       <h1>GTGuessr</h1>
       <div class="timer-label">Timer</div>
-      <div class="timer">00:00</div>
+      <div class="timer" id="timer">00:00</div>
       <div class="score-label">Score</div>
       <div class="score">0</div>
-      <a id="submit" href="#" class="submit-button">Submit</a>
+      <a id="submit" href="#" class="button">Submit</a>
     </div>
 
     <div class="right-panel">
       <div id="panorama"></div>
       <div id="map"></div>
+    </div>
+
+    <div id="results">
+      <div id="result-tab">
+        <p id="round"></p>
+        <p id="distance"></p>
+        <p id="score"></p>
+        <a id="next" href="#" class="button">Next Round</a>
+      </div>
     </div>
   </div>
 {% endblock %}

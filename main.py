@@ -24,8 +24,9 @@ app.secret_key = secret
 with open('locations.json') as json_file:
     imgdict = json.load(json_file)
 
-padding = 30
-scoring = 100
+padding = 40
+scoring = 1000
+factor = 2
 
 """
 HTML ROUTES
@@ -66,16 +67,19 @@ def game_answer(loc_id, lat, lgt):
 
     distance = geodesic(guess_coords, actual_coords).feet
 
-    maxdist = 6388
-    score = ((maxdist - distance) + padding) / maxdist
+    maxdist = 2000
+    score = (((maxdist - distance) + padding) / maxdist)
     if score < 0:
         score = 0
     if score > 1:
         score = 1
 
+    score = score ** factor
+
     record = {
-        'guess':{'lat':float(lat),'lgt':float(lgt)},
-        'actual':{'lat':imgdict[loc_id]['lat'],'lgt':imgdict[loc_id]['lng']},
-        'score': score * scoring
+        'guess':{'lat':float(lat),'lng':float(lgt)},
+        'actual':{'lat':imgdict[loc_id]['lat'],'lng':imgdict[loc_id]['lng']},
+        'score': int(score * scoring),
+        'distance': distance
     }
     return record, 200
