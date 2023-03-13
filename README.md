@@ -46,3 +46,25 @@ We learned how to use Python and Flask to parse through images and get the data 
 
 We would like to add a multiplayer version where the player can compete against others. We would also like to implement a Hard mode where the user has to guess the location based on a still image instead of a panoramic image. Other smaller features would be to add more pictures to the game and fine-tune some of the location pins.
 
+<!-- Frank's Hidden Notes! -->
+<!-- 
+
+* install deps
+pip install -r requirements.txt
+
+
+* build the site first
+
+cd gtguessr/static/gt-guessr
+npm install
+npm run build
+
+* ok now either do the fun docker image or run the function for locally (in project root)
+
+hypercorn gtguessr.main:app
+
+
+docker build -t gtsite .
+docker run -d gtsite:latest -p 8000:8000
+
+ -->
