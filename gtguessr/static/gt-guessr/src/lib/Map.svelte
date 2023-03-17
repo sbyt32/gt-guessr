@@ -23,8 +23,8 @@
 			style: 'mapbox://styles/mapbox/streets-v9',
 			center: [lon, lat],
 			zoom
-		});        
-        
+		});
+
         map.on('click', (e) => {
             if (interactive === true) {
             try {
@@ -57,12 +57,11 @@
 		on:load={load}
 	/>
 </svelte:head>
-<div bind:this={container} style:--h={h} style:--w={w}>
+<div bind:this={container} style:--h={h} style:--w={w} class="border-4 border-black/40">
     {#if map}
     <slot/>
     {/if}
 </div>
-
 <style lang="postcss">
 
     div {

@@ -17,3 +17,9 @@ export const userGuess = writable({lng: 0, lat: 0})
 // User Guess
 
 export const gameTimer = writable({current: 0, total: 0})
+
+export type GameAnswerData = {
+    lat: Number
+    long: Number
+}
+export const gameAnswers = writable<Object>({})

@@ -27,3 +27,5 @@ dist-ssr
 # Tokens
 # Please use an .env file in prod 💀
 token.ts
+# Pytest
+.coverage

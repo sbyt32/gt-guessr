@@ -5,9 +5,11 @@
     import {startGame} from "../assets/game"
 </script>
 
-<div class="grid grid-cols-6 grid-row-3">
-    <div class="flex flex-col col-span-2 col-start-3">
-        <h1 class="text-4xl font-bold mt-8">GTGuessr</h1>
+<div class="container mx-auto w-1/3 ">
+    <div class="flex flex-col h-screen">
+        <h1 class="text-4xl font-bold mt-8">
+            GTGuessr
+        </h1>
         <div class="text-left font-semibold text-base">
             <p class="italic text-center">
                 How well do YOU know Georgia Tech?
@@ -18,12 +20,13 @@
                 Look at a series of images and panoramas taken from various spots on the Georgia Tech campus. Use the minimap to pin where you think the picture was taken. The faster you guess, and the closer you are, the more points you'll score!
             </p>
         </div>
-        <div>
+        <div class="grow">
             <button class="w-1/4 m-12 p-4" on:click={() => startGame()}>
                 Play!
-            </button>    
+            </button>
+        </div>
+        <div class="place-content-end">
+            <Footer/>
         </div>
     </div>
 </div>
-
-<Footer/>

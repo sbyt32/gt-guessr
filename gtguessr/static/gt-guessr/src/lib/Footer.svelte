@@ -6,13 +6,13 @@
         ]
 </script>
 
-<div class="text-center text-black pt-0">
+<div class="text-center text-black pb-2">
     <p class="text-sm">
     {#each creators as creator}
         <a href={creator.link} class="px-2">
-        <i class="fa-brands fa-twitter"></i>
+        <i class="fa-brands fa-twitter"/>
         {creator.user}
-        </a> 
+        </a>
     {/each}
     </p>
 </div>

@@ -3,4 +3,4 @@ from fastapi import APIRouter
 
 api_router = APIRouter()
 
-api_router.include_router(game_router, prefix='/api')
+api_router.include_router(game_router, prefix="/api")

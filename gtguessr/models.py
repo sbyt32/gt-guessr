@@ -1,6 +1,7 @@
 from pydantic import BaseModel, validator, root_validator
 from .config import MAX_DIST, FACTOR, SCORING, PADDING
 
+
 class GamePoint(BaseModel):
     lat: float
     long: float
@@ -12,16 +13,18 @@ class GamePoint(BaseModel):
     #         assert values(field).isnumeric()
     #         assert float(values(field))
 
+
 class GameRecord(BaseModel):
     guess: GamePoint
     actual: GamePoint
     score: int
     distance: float
 
+
 class GameScore(BaseModel):
     score: float
 
-    @validator('score')
+    @validator("score")
     # https://docs.pydantic.dev/usage/validators/
     def check_overflow(cls, v):
         if v < 0:
@@ -30,4 +33,7 @@ class GameScore(BaseModel):
             v = 1
         return v
 
-                        # score = (((MAX_DIST - dist) + PADDING) / MAX_DIST)
+        # score = (((MAX_DIST - dist) + PADDING) / MAX_DIST)
+
+
+# class Game

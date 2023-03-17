@@ -16,7 +16,7 @@ GTGuessr is a game where players are transported to a random location on Georgia
 
 ## How we built it
 
-### Frontend: 
+### Frontend:
 
 We explored campus to take panoramic pictures of both everyday locations and obscure locations. The with the Pannellum JS library, we then casted these images to a 360 view frame.
 
@@ -24,7 +24,7 @@ Using Leaflet, an open source JS library for viewing map data, we made a system 
 
 The game page uses jQuery for updating DOM elements and sending and receiving API requests.
 
-### Backend 
+### Backend
 
 Using Python and Flask, we have two routes, index and game, that serve dynamically generated html templates. We also have multiple RESTful routes for sending and receiving data during the game loop of GTGuessr.
 
@@ -47,7 +47,7 @@ We learned how to use Python and Flask to parse through images and get the data 
 We would like to add a multiplayer version where the player can compete against others. We would also like to implement a Hard mode where the user has to guess the location based on a still image instead of a panoramic image. Other smaller features would be to add more pictures to the game and fine-tune some of the location pins.
 
 <!-- Frank's Hidden Notes! -->
-<!-- 
+<!--
 
 * install deps
 pip install -r requirements.txt
@@ -67,4 +67,11 @@ hypercorn gtguessr.main:app
 docker build -t gtsite .
 docker run -d gtsite:latest -p 8000:8000
 
+
+
+things to do:
+    update readme
+
+heres to run tests
+pytest --cov=tests/
  -->

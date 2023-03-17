@@ -7,18 +7,18 @@ from .api import api_router
 
 routes = [
     Mount(
-        "/",
-        app=StaticFiles(directory="./gtguessr/static/gt-guessr/dist", html=True)
+        "/game",
+        app=StaticFiles(directory="./gtguessr/static/gt-guessr/dist", html=True),
     )
 ]
 
-# Temporary
 origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
     "http://localhost:8080",
-    "*"
+    "*",
 ]
-
-
 
 app = FastAPI(title="GTGuessr", routes=routes)
 app.include_router(api_router)
